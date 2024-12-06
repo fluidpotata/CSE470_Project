@@ -1,33 +1,30 @@
 import os
-from flask import Flask
-from models import db  
+
+from flask import Flask, render_template, request
 from models.user import User  
 
 
 app = Flask(__name__)
 
 
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///instance/database.db'  
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False  
-
-
-if not os.path.exists('instance'):
-    os.makedirs('instance')
-
-
-db.init_app(app)
-
-
-with app.app_context():
-    print("Creating tables...")
-    db.create_all()  
-    print("Tables created!")
-
-
 @app.route('/')
-def home():
-    return "Flask app is running!"
+def index():
+    return render_template('index.html')
 
+
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    if request.method == 'GET':
+        return render_template('login.html')
+    elif request.method == 'POST':
+        username = request.form['username']
+        password = request.form['password']
+        is_success = User.authenticate(username, password)
+        if is_success:
+            return "Success" #User class creation here
+        else:
+            # return render_template('login.html', is_success=is_success)
+            return "rejected"
 
 if __name__ == '__main__':
     app.run(debug=True)
