@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 from . import db  
 
 
@@ -31,3 +32,6 @@ class User(db.Model):
    
     def __repr__(self):
         return f'<User {self.username}>'
+=======
+from database import *
+>>>>>>> d15fc0049d49b9858e8026f46f5f30eb39e4a156
