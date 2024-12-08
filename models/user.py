@@ -1,9 +1,7 @@
-from . import db
-from db import *
+from database import *
 
 
-class User(db.Model):
-
+class User():
     def __init__(self, username, name, nid, date_of_birth, email, address, password, contact, blood_type):
         self.username = username
         self.name = name
@@ -27,3 +25,7 @@ class User(db.Model):
         if password==get_result_from_query(query)[0][0]:
             return True
         return False
+
+    @staticmethod
+    def registerUser():
+        pass #will be done by maishatasnim25
