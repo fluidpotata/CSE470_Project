@@ -24,7 +24,7 @@ def login():
             return "Success" #User class creation here
         else:
             # return render_template('login.html', is_success=is_success)
-            return ("rejected")
+            return "rejected"
 
 
 @app.route('/signup')
