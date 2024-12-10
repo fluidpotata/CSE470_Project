@@ -27,12 +27,23 @@ def login():
             return "rejected"
 
 
-@app.route('/signup')
+@app.route('/signup', methods=['GET', 'POST'])
 def signup():
     if request.method == 'GET':
         return render_template('signup.html')
     elif request.method == 'POST':
-        pass # will be done by mystics
+        username = request.form['username']
+        email = request.form['email']
+        name = request.form['name']
+        nid = request.form['nid']
+        date_of_birth = request.form['dob']
+        print(date_of_birth)
+        address = request.form['address']
+        password = request.form['password']
+        contact = request.form['phone']
+        blood_type = request.form['bloodgroup']
+        is_success = User.registerUser(username, email, name, nid, date_of_birth, address, password, contact, blood_type)
+        return is_success[1]
 
 
 if __name__ == '__main__':

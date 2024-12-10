@@ -29,11 +29,11 @@ class User():
 
     @staticmethod
     def registerUser(username, email, name, nid, date_of_birth, address, password, contact, blood_type):
-        query2 = f'''select count(*) from users where username={username};'''
+        query2 = f'''select count(*) from users where username='{username}';'''
         if int(get_result_from_query(query2)[0][0])>0:
-            return {False, "Username already registered!"}
+            return (False, "Username already registered!")
         query1 = '''select count(*) from users;'''
         c = int(get_result_from_query(query1)[0][0]) + 100000
-        query = f"""INSERT INTO users (username, userid, name, nid, dateofbirth, email, address, password, contact, bloodtype) VALUES ({username}, {c}, {email}, {name}, {nid}, {date_of_birth}, {address}, {password}, {contact}, {blood_type});"""
+        query = f"""INSERT INTO users (username, userid, name, nid, dateofbirth, email, address, password, contact, bloodtype) VALUES ('{username}', '{c}', '{email}', '{name}', '{nid}', '{date_of_birth}', '{address}', '{password}', '{contact}', '{blood_type}');"""
         execute_query(query)
-        return {True, "User registered!"}
+        return (True, "User registered!")
