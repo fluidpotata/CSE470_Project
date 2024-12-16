@@ -5,7 +5,7 @@ from models.user import User
 
 
 app = Flask(__name__)
-
+user = None
 
 @app.route('/')
 def index():
@@ -14,17 +14,19 @@ def index():
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
+    global user
     if request.method == 'GET':
         return render_template('login.html')
     elif request.method == 'POST':
         username = request.form['username']
         password = request.form['password']
         is_success = User.authenticate(username, password)
-        if is_success:
-            return "Success" #User class creation here
+        if is_success[0]:
+            user = is_success[1]
+            return f"Success, welcome {user.name}" #User class creation here
         else:
             # return render_template('login.html', is_success=is_success)
-            return "rejected"
+            return render_template('login.html', msg={'class':'text-danger bg-warning','content':"Username or password incorrect"})
 
 
 @app.route('/signup', methods=['GET', 'POST'])
