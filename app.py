@@ -23,7 +23,8 @@ def login():
         is_success = User.authenticate(username, password)
         if is_success[0]:
             user = is_success[1]
-            return f"Success, welcome {user.name}" #User class creation here
+            # return f"Success, welcome {user.name}" #User class creation here
+            return render_template('vdash.html', user=user)
         else:
             # return render_template('login.html', is_success=is_success)
             return render_template('login.html', msg={'class':'text-danger bg-warning','content':"Username or password incorrect"})

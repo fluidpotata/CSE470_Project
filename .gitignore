@@ -8,3 +8,4 @@ app.cpython-313.pyc
 models/__pycache__/
 __pycache__
 /__pycache__
+*.pyc
