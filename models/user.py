@@ -1,23 +1,7 @@
-<<<<<<< HEAD
-from . import db  
+from database import *
 
 
-class User(db.Model):
-    __tablename__ = 'user'  
-
-    
-    userid = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    username = db.Column(db.String(100), unique=True, nullable=False)
-    name = db.Column(db.String(100), nullable=False)
-    nid = db.Column(db.String(50), unique=True, nullable=False)
-    date_of_birth = db.Column(db.Date, nullable=False)
-    email = db.Column(db.String(100), unique=True, nullable=False)
-    address = db.Column(db.String(200), nullable=True)
-    password = db.Column(db.String(200), nullable=False)
-    contact = db.Column(db.String(20), nullable=False)
-    blood_type = db.Column(db.String(5), nullable=True)
-
-   
+class User():
     def __init__(self, username, name, nid, date_of_birth, email, address, password, contact, blood_type):
         self.username = username
         self.name = name
@@ -32,6 +16,29 @@ class User(db.Model):
    
     def __repr__(self):
         return f'<User {self.username}>'
-=======
-from database import *
->>>>>>> d15fc0049d49b9858e8026f46f5f30eb39e4a156
+
+
+    @staticmethod
+    def authenticate(username, password):
+        query = f"SELECT password FROM users WHERE username='{username}';"
+        query2 = f'''select * from users where username='{username}';'''
+        try:
+            if password==get_result_from_query(query)[0][0]:
+                res = get_result_from_query(query2)
+                user = User(res[0][0], res[0][2], res[0][3], res[0][4], res[0][5], res[0][6], res[0][7], res[0][8], res[0][9])
+                return (True, user)
+        except:
+            print("error")
+        return (False, None)
+        # object creation and session creation is yet to be done
+
+    @staticmethod
+    def registerUser(username, email, name, nid, date_of_birth, address, password, contact, blood_type):
+        query2 = f'''select count(*) from users where username='{username}';'''
+        if int(get_result_from_query(query2)[0][0])>0:
+            return (False, "Username already registered!")
+        query1 = '''select count(*) from users;'''
+        c = int(get_result_from_query(query1)[0][0]) + 100000
+        query = f"""INSERT INTO users (username, userid, name, nid, dateofbirth, email, address, password, contact, bloodtype) VALUES ('{username}', '{c}', '{email}', '{name}', '{nid}', '{date_of_birth}', '{address}', '{password}', '{contact}', '{blood_type}');"""
+        execute_query(query)
+        return (True, "User registered!")
