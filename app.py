@@ -23,8 +23,8 @@ def login():
         is_success = User.authenticate(username, password)
         if is_success[0]:
             user = is_success[1]
-            # return f"Success, welcome {user.name}" #User class creation here
-            return render_template('dash.html', user=user)
+            info = user.getInfo()
+            return render_template('dash.html', user=user, info=info[0])
         else:
             # return render_template('login.html', is_success=is_success)
             return render_template('login.html', msg={'class':'text-danger bg-warning','content':"Username or password incorrect"})
