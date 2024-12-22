@@ -1,7 +1,7 @@
 import sqlite3
 
 from flask import Flask, render_template, request
-from models import User, Volunteer
+from models import User, Volunteer, Rcamp
 
 
 app = Flask(__name__)
@@ -64,6 +64,17 @@ def resources_dashboard():
         {'id': 1, 'type': 'type', 'quantity': 15, 'location': 'Tangail'}
     ]
     return render_template('resources_dashboard.html', resources=resources, user=user)
+
+
+@app.route('/rcamp', methods=['GET', 'POST'])
+def r_camp_info(v_cap, v_occ):
+    if request.method == 'GET':
+        result = Rcamp.get_camp_status(v_id)
+        return render_template('rcamp.html', rcamp=result)
+    elif request.method == 'POST':
+        return Rcamp.update_camp(v_cap, v_occ)
+
+
 
 # Main entry point
 if __name__ == '__main__':
