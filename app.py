@@ -1,18 +1,7 @@
-<<<<<<< HEAD
-from flask import Flask, render_template
 import sqlite3
 
-app = Flask(__name__)
-
-# Route for the home page
-@app.route('/')
-def home():
-    return '<h1>Welcome to the Volunteer and User Dashboard System</h1><p>Visit <a href="/resources">Resources Dashboard</a> to view resources.</p>'
-=======
-import os
-
 from flask import Flask, render_template, request
-from models.user import User  
+from models import User, Volunteer
 
 
 app = Flask(__name__)
@@ -35,10 +24,18 @@ def login():
         if is_success[0]:
             user = is_success[1]
             # return f"Success, welcome {user.name}" #User class creation here
-            return render_template('vdash.html', user=user)
+            return render_template('dash.html', user=user)
         else:
             # return render_template('login.html', is_success=is_success)
             return render_template('login.html', msg={'class':'text-danger bg-warning','content':"Username or password incorrect"})
+
+
+
+@app.route('/volunteer')
+def volunteer():
+    voln = Volunteer.getVolunteer(1)
+    info = voln.getInfo()
+    return render_template('vdash.html', voln=voln, info=info[0])
 
 
 @app.route('/signup', methods=['GET', 'POST'])
@@ -58,26 +55,15 @@ def signup():
         blood_type = request.form['bloodgroup']
         is_success = User.registerUser(username, email, name, nid, date_of_birth, address, password, contact, blood_type)
         return is_success[1]
->>>>>>> 5bd6143b44b2413efc18c10326f9fb13f1bcea95
 
-# Route to display the Resources Dashboard
+
+
 @app.route('/resources')
 def resources_dashboard():
-    # Connect to SQLite database
-    conn = sqlite3.connect('resources.db')  # Replace 'resources.db' with your database file name
-    cursor = conn.cursor()
-
-    # Query to fetch resources
-    cursor.execute('SELECT id, type, quantity, location FROM resources')
     resources = [
-        {'id': row[0], 'type': row[1], 'quantity': row[2], 'location': row[3]}
-        for row in cursor.fetchall()
+        {'id': 1, 'type': 'type', 'quantity': 15, 'location': 'Tangail'}
     ]
-    
-    conn.close()
-
-    # Render the resources_dashboard.html template
-    return render_template('resources_dashboard.html', resources=resources)
+    return render_template('resources_dashboard.html', resources=resources, user=user)
 
 # Main entry point
 if __name__ == '__main__':

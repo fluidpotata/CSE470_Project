@@ -22,15 +22,17 @@ class User():
     def authenticate(username, password):
         query = f"SELECT password FROM users WHERE username='{username}';"
         query2 = f'''select * from users where username='{username}';'''
+        print(password)
+        f = get_result_from_query(query)[0][0]
+        print(f)
         try:
-            if password==get_result_from_query(query)[0][0]:
+            if password==f:
                 res = get_result_from_query(query2)
                 user = User(res[0][0], res[0][2], res[0][3], res[0][4], res[0][5], res[0][6], res[0][7], res[0][8], res[0][9])
                 return (True, user)
         except:
             print("error")
         return (False, None)
-        # object creation and session creation is yet to be done
 
     @staticmethod
     def registerUser(username, email, name, nid, date_of_birth, address, password, contact, blood_type):

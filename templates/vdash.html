@@ -27,18 +27,18 @@
 </head>
 <body>
     <div class="container container-custom my-5">
-        <h1 class="mb-4">Welcome, {{ user.name }}</h1>
+        <h1 class="mb-4">Welcome, {{ info[5] }}</h1>
         <div class="row g-4">
             <div class="col-md-4">
                 <div class="box">
                     <p>You are assigned as:</p>
-                    <h3>On Field Voln</h3>
+                    <h3>{{ voln.role }}</h3>
                 </div>
             </div>
             <div class="col-md-4">
                 <div class="box">
                     <p>Your team leader:</p>
-                    <h3>Ibrahim</h3>
+                    <h3>{{info[1]}}</h3>
                 </div>
             </div>
             <div class="col-md-4">
@@ -50,19 +50,19 @@
             <div class="col-md-4">
                 <div class="box">
                     <p>Assigned to:</p>
-                    <h3>Cidor</h3>
+                    <h3>{{info[2]}}</h3>
                 </div>
             </div>
             <div class="col-md-4">
                 <div class="box">
                     <p>Assigned in:</p>
-                    <h3>Relief Camp</h3>
+                    <h3>{{info[3]}}</h3>
                 </div>
             </div>
             <div class="col-md-4">
                 <div class="box">
                     <p>Location:</p>
-                    <h3>Bhola</h3>
+                    <h3>{{info[4]}}</h3>
                 </div>
             </div>
         </div>
