@@ -35,7 +35,7 @@ def login():
 def volunteer():
     voln = Volunteer.getVolunteer(1)
     info = voln.getInfo()
-    return render_template('vdash.html', voln=voln, info=info[0])
+    return render_template('dash.html', voln=voln, info=info[0])
 
 
 @app.route('/signup', methods=['GET', 'POST'])

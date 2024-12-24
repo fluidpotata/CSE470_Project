@@ -44,3 +44,7 @@ class User():
         query = f"""INSERT INTO users (username, userid, name, nid, dateofbirth, email, address, password, contact, bloodtype) VALUES ('{username}', '{c}', '{email}', '{name}', '{nid}', '{date_of_birth}', '{address}', '{password}', '{contact}', '{blood_type}');"""
         execute_query(query)
         return (True, "User registered!")
+
+    def getInfo(self):
+        query = f'''select * from users where username='{self.username}';'''
+        return get_result_from_query(query)
