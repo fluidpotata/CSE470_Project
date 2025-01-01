@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resource Management</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            font-family: "Comic Sans MS", cursive, sans-serif;
+            color: #fff;
+        }
+        .box {
+            border: 2px solid #fff;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            font-weight: bold;
+        }
+        .container-custom {
+            max-width: 900px;
+            display: flex;
+            flex-direction: column;
+        }
+        h1 {
+            font-weight: bold;
+        }
+        p {
+            font-size: 0.9em;
+        }
+    </style>
+</head>
+<body>
+    <div class="container container-custom my-5">
+        <div style="display: flex; justify-content: center; align-items: center;">
+            <h1 class="mb-4">Resource Management</h1>
+        </div>
+        <div class="card display-flex justify-content-center align-items-center">
+            <div class="col-md-8">
+                <div class="box">
+                    <h2>Manage Resources</h2>
+                    <p>Resource ID: {{ resource.resID }}</p>
+                    <p>Type: {{ resource.type }}</p>
+                    <p>Quantity: {{ resource.quantity }}</p>
+                    <p>Location: {{ resource.location }}</p>
+
+                    <button type="button" class="btn btn-outline-secondary mt-2" data-bs-toggle="modal" data-bs-target="#updateResourceModal">Update Resource</button>
+
+                    <div class="modal fade" id="updateResourceModal" tabindex="-1" aria-labelledby="updateResourceModalLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="updateResourceModalLabel">Update Resource</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <form id="updateResourceForm">
+                                        <div class="mb-3">
+                                            <label for="resID" class="form-label">Resource ID</label>
+                                            <input type="text" class="form-control" id="resID" name="resID" value="{{ resource.resID }}" readonly>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="resType" class="form-label">Resource Type</label>
+                                            <input type="text" class="form-control" id="resType" name="type" value="{{ resource.type }}" readonly>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="resLocation" class="form-label">Location</label>
+                                            <input type="text" class="form-control" id="resLocation" name="location" value="{{ resource.location }}" readonly>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="resQuantity" class="form-label">Quantity</label>
+                                            <input type="number" class="form-control" id="resQuantity" name="quantity" value="{{ resource.quantity }}">
+                                        </div>
+                                        <button type="submit" class="btn btn-primary">Save changes</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <button class="btn btn-success mt-3" onclick="location.href='/add-resource'">Add New Resource</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
