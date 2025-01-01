@@ -2,7 +2,7 @@ from database import *
 
 class Resource(db.Model):
     __tablename__ = 'resources'
-    resID = db.Column(db.Integer, primary_key=True)
+    resID = db.Column(db.Integer, primary_key=True, autoincrement=True)
     campID = db.Column(db.Integer, nullable=False)
     type = db.Column(db.String(50), nullable=False)
     quantity = db.Column(db.Integer, nullable=False)

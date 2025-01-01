@@ -4,7 +4,7 @@ from models.user import User
 class Volunteer(db.Model):
     __tablename__ = 'volunteers'
     
-    volunteerid = db.Column(db.String, primary_key=True)
+    volunteerid = db.Column(db.String, primary_key=True, autoincrement=True)
     role = db.Column(db.String)
     availability = db.Column(db.String)
     

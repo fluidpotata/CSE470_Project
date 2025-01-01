@@ -1,6 +1,6 @@
 from database import *
 class Incident(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     type = db.Column(db.String(50), nullable=False)
     location = db.Column(db.String(100), nullable=False)
     status = db.Column(db.String(50), nullable=False)

@@ -4,7 +4,7 @@ from database import *
 class Rcamp(db.Model):
     __tablename__ = 'Reliefcamp'
     
-    id = db.Column(db.Integer, primary_key=True)
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     name = db.Column(db.String(100), nullable=False)
     location = db.Column(db.String(100), nullable=False)
     v_capacity = db.Column(db.Integer, nullable=False)
