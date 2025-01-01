@@ -1,50 +1,67 @@
 from database import *
+from datetime import datetime
 
+class User(db.Model):
+    __tablename__ = 'users'
 
-class User():
-    def __init__(self, username, name, nid, date_of_birth, email, address, password, contact, blood_type):
-        self.username = username
-        self.name = name
-        self.nid = nid
-        self.date_of_birth = date_of_birth
-        self.email = email
-        self.address = address
-        self.password = password
-        self.contact = contact
-        self.blood_type = blood_type
+    id = db.Column(db.Integer, primary_key=True)
+    username = db.Column(db.String(50), unique=True, nullable=False)
+    name = db.Column(db.String(100), nullable=False)
+    nid = db.Column(db.String(20), nullable=False)
+    date_of_birth = db.Column(db.String(10), nullable=False)  # Changed to String to store date as 'YYYY-MM-DD'
+    email = db.Column(db.String(100), unique=True, nullable=False)
+    address = db.Column(db.String(200), nullable=False)
+    password = db.Column(db.String(100), nullable=False)
+    contact = db.Column(db.String(20), nullable=False)
+    blood_type = db.Column(db.String(3), nullable=False)
 
-   
     def __repr__(self):
         return f'<User {self.username}>'
 
-
     @staticmethod
     def authenticate(username, password):
-        query = f"SELECT password FROM users WHERE username='{username}';"
-        query2 = f'''select * from users where username='{username}';'''
-        print(password)
-        f = get_result_from_query(query)[0][0]
-        print(f)
-        try:
-            if password==f:
-                res = get_result_from_query(query2)
-                user = User(res[0][0], res[0][2], res[0][3], res[0][4], res[0][5], res[0][6], res[0][7], res[0][8], res[0][9])
-                return (True, user)
-        except:
-            print("error")
+        user = User.query.filter_by(username=username).first()
+        if user and user.password == password:
+            return (True, user)
         return (False, None)
 
     @staticmethod
     def registerUser(username, email, name, nid, date_of_birth, address, password, contact, blood_type):
-        query2 = f'''select count(*) from users where username='{username}';'''
-        if int(get_result_from_query(query2)[0][0])>0:
+        if User.query.filter_by(username=username).first():
             return (False, "Username already registered!")
-        query1 = '''select count(*) from users;'''
-        c = int(get_result_from_query(query1)[0][0]) + 100000
-        query = f"""INSERT INTO users (username, userid, name, nid, dateofbirth, email, address, password, contact, bloodtype) VALUES ('{username}', '{c}', '{email}', '{name}', '{nid}', '{date_of_birth}', '{address}', '{password}', '{contact}', '{blood_type}');"""
-        execute_query(query)
+            
+        # Validate and format date_of_birth
+        try:
+            if isinstance(date_of_birth, str):
+                datetime.strptime(date_of_birth, '%Y-%m-%d')  # Validate date format
+            else:
+                date_of_birth = date_of_birth.strftime('%Y-%m-%d')
+        except ValueError:
+            return (False, "Invalid date format. Use YYYY-MM-DD")
+            
+        user = User(
+            username=username,
+            email=email,
+            name=name,
+            nid=nid,
+            date_of_birth=date_of_birth,
+            address=address,
+            password=password,
+            contact=contact,
+            blood_type=blood_type
+        )
+        db.session.add(user)
+        db.session.commit()
         return (True, "User registered!")
 
     def getInfo(self):
-        query = f'''select * from users where username='{self.username}';'''
-        return get_result_from_query(query)
+        return {
+            'username': self.username,
+            'name': self.name,
+            'nid': self.nid,
+            'date_of_birth': self.date_of_birth,
+            'email': self.email,
+            'address': self.address,
+            'contact': self.contact,
+            'blood_type': self.blood_type
+        }

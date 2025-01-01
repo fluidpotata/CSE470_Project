@@ -1,23 +1,31 @@
 from database import *
+from models.user import User
 
-class Volunteer():
-    def __init__(self, volunteerid,role,availability):
+class Volunteer(db.Model):
+    __tablename__ = 'volunteers'
+    
+    volunteerid = db.Column(db.String, primary_key=True)
+    role = db.Column(db.String)
+    availability = db.Column(db.String)
+    
+    def __init__(self, volunteerid, role, availability):
         self.volunteerid = volunteerid
-        self.availability = availability
         self.role = role
+        self.availability = availability
 
     def assignTask(self, task):
         pass
 
     @staticmethod
-    def registerVolunteer(volunteerid, skills, availability, type):
-        return Volunteer(volunteerid, skills, availability, type)
+    def registerVolunteer(volunteerid, role, availability):
+        volunteer = Volunteer(volunteerid, role, availability)
+        db.session.add(volunteer)
+        db.session.commit()
+        return volunteer
 
     @staticmethod
     def getVolunteer(volunteerid):
-        query = f'''select * from volunteers where volnID='{volunteerid}';'''
-        res = get_result_from_query(query)
-        return Volunteer(res[0][0], res[0][1], res[0][2])
+        return Volunteer.query.filter_by(volunteerid=volunteerid).first()
 
     def trackActivity(self):
         pass
@@ -27,15 +35,16 @@ class Volunteer():
 
     def setAvailability(self, new_availability):
         self.availability = new_availability
+        db.session.commit()
     
     def getInfo(self):
-        query = f'''
-        SELECT w.*, u.name 
-        FROM workAssigned w
-        JOIN volunteers v ON w.volnID = v.volnID
-        JOIN users u ON v.userID = u.userID
-        WHERE w.volnID = '{self.volunteerid}';
-        '''
-        # data still not available, need to implement others first!
-        res = get_result_from_query(query)
+        query = db.session.query(WorkAssigned, User.name).join(Volunteer, WorkAssigned.volnID == Volunteer.volunteerid).join(User, Volunteer.userID == User.id).filter(WorkAssigned.volnID == self.volunteerid)
+        res = query.all()
         return res
+
+class WorkAssigned(db.Model):
+    __tablename__ = 'workAssigned'
+    
+    id = db.Column(db.Integer, primary_key=True)
+    volnID = db.Column(db.String, db.ForeignKey('volunteers.volunteerid'))
+    # other fields...
