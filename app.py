@@ -1,6 +1,6 @@
 import sqlite3
 import os
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, flash, redirect, url_for
 from models import User, Volunteer, Rcamp
 from database import db, init_db
 import logging
@@ -62,7 +62,12 @@ def signup():
         contact = request.form['phone']
         blood_type = request.form['bloodgroup']
         is_success = User.registerUser(username, email, name, nid, date_of_birth, address, password, contact, blood_type)
-        return is_success[1]
+        if is_success[0]:
+            flash(is_success[1], 'success')
+            return redirect(url_for('login'))
+        else:
+            flash(is_success[1],'danger')
+            return redirect(url_for('signup'))
 
 @app.route('/resources')
 def resources_dashboard():
@@ -71,13 +76,13 @@ def resources_dashboard():
     ]
     return render_template('resources_dashboard.html', resources=resources, user=user)
 
-# @app.route('/rcamp', methods=['GET', 'POST'])
-# def r_camp_info(v_cap, v_occ):
-#     if request.method == 'GET':
-#         result = Rcamp.get_camp_status(v_id)
-#         return render_template('rcamp.html', rcamp=result)
-#     elif request.method == 'POST':
-#         return Rcamp.update_camp(v_cap, v_occ)
+@app.route('/rcamp', methods=['GET', 'POST'])
+def r_camp_info(v_cap, v_occ):
+    if request.method == 'GET':
+        result = Rcamp.get_camp_status(v_id)
+        return render_template('rcamp.html', rcamp=result)
+    elif request.method == 'POST':
+        return Rcamp.update_camp(v_cap, v_occ)
 
 # Main entry point
 if __name__ == '__main__':
