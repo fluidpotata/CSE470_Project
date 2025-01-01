@@ -34,8 +34,7 @@ def login():
         is_success = User.authenticate(username, password)
         if is_success[0]:
             user = is_success[1]
-            info = user.getInfo()
-            return render_template('dash.html', user=user, info=info['username'])
+            return redirect(url_for('dashboard'))
         else:
             # return render_template('login.html', is_success=is_success)
             return render_template('login.html', msg={'class':'text-danger bg-warning','content':"Username or password incorrect"})
@@ -68,6 +67,14 @@ def signup():
         else:
             flash(is_success[1],'danger')
             return redirect(url_for('signup'))
+
+
+
+@app.route('/dashboard')
+def dashboard():
+    info = user.getInfo()
+    return render_template('dash.html', user=user, info=info)
+
 
 @app.route('/resources')
 def resources_dashboard():
