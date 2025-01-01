@@ -1,6 +1,6 @@
 import sqlite3
 import os
-from flask import Flask, render_template, request, flash, redirect, url_for
+from flask import Flask, render_template, request, flash, redirect, url_for, session
 from models import User, Volunteer, Rcamp
 from database import db, init_db
 import logging
@@ -34,6 +34,8 @@ def login():
         is_success = User.authenticate(username, password)
         if is_success[0]:
             user = is_success[1]
+            session['user'] = user.id
+            session['role'] = user.role
             return redirect(url_for('dashboard'))
         else:
             # return render_template('login.html', is_success=is_success)
