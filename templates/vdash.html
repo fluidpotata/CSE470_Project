@@ -38,34 +38,54 @@
             <div class="col-md-4">
                 <div class="box">
                     <p>Your team leader:</p>
-                    <h3>{{info[1]}}</h3>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="box">
-                    <p>Something:</p>
-                    <h3>Smth</h3>
+                    <h3>{{ info[1] }}</h3>
                 </div>
             </div>
             <div class="col-md-4">
                 <div class="box">
                     <p>Assigned to:</p>
-                    <h3>{{info[2]}}</h3>
+                    <h3>{{ info[2] }}</h3>
                 </div>
             </div>
             <div class="col-md-4">
                 <div class="box">
                     <p>Assigned in:</p>
-                    <h3>{{info[3]}}</h3>
+                    <h3>{{ info[3] }}</h3>
                 </div>
             </div>
             <div class="col-md-4">
                 <div class="box">
                     <p>Location:</p>
-                    <h3>{{info[4]}}</h3>
+                    <h3>{{ info[4] }}</h3>
                 </div>
             </div>
         </div>
+
+       
+        <div class="text-center mt-4">
+            <a href="{{ url_for('update_disaster', volunteer_id=voln.volunteerid) }}" class="btn btn-primary">
+                Update/Add Ongoing Disaster
+            </a>
+        </div>
+
+       
+        {% if ongoing_disaster %}
+        <div class="mt-5">
+            <h2>Ongoing Disaster Details</h2>
+            <div class="box mt-3">
+                <p>Disaster Type:</p>
+                <h3>{{ ongoing_disaster.disaster_type }}</h3>
+                <p>Location:</p>
+                <h3>{{ ongoing_disaster.location }}</h3>
+            </div>
+        </div>
+        {% else %}
+        <div class="mt-5">
+            <h3>No ongoing disaster reported.</h3>
+        </div>
+        {% endif %}
     </div>
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
+</html>
