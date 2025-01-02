@@ -93,21 +93,7 @@ def makeDonation():
     return redirect(url_for('login'))
 
 
-@app.route('/rcamp', methods=['GET', 'POST'])
-def r_camp_info():
-    if "role" in session:
-        if session['role'] != 'volunteer':
-            return redirect(url_for('login'))
-    v_id = session['user']
-    if Volunteer.getVolunteer(v_id) is None:
-        return redirect(url_for('login'))
-    if request.method == 'GET':
-        result = Rcamp.get_camp_status(v_id)
-        return render_template('rcamp.html', rcamp=result)
-    elif request.method == 'POST':
-        v_cap = request.form['v_capacity']
-        v_occ = request.form['v_occupied']
-        return Rcamp.update_camp(v_cap, v_occ)
+
 
 
 @app.route('/donateblood', methods = ["GET", "POST"])
@@ -210,6 +196,21 @@ def update_disaster(volunteer_id):
     ongoing_disaster = OngoingDisaster.query.filter_by(volunteer_id=volunteer_id).first()
     return render_template('update_disaster.html', volunteer_id=volunteer_id, ongoing_disaster=ongoing_disaster)
 
+@app.route('/rcamp', methods=['GET', 'POST'])
+def r_camp_info():
+    if "role" in session:
+        if session['role'] != 'volunteer':
+            return redirect(url_for('login'))
+    v_id = session['user']
+    if Volunteer.getVolunteer(v_id) is None:
+        return redirect(url_for('login'))
+    if request.method == 'GET':
+        result = Rcamp.get_camp_status(v_id)
+        return render_template('rcamp.html', rcamp=result)
+    elif request.method == 'POST':
+        v_cap = request.form['v_capacity']
+        v_occ = request.form['v_occupied']
+        return Rcamp.update_camp(v_cap, v_occ)
 
 @app.route('/emergency_directory')
 def emergency_directory():
