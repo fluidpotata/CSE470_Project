@@ -72,6 +72,8 @@ def signup():
 @app.route('/dashboard')
 def dashboard():
     if 'user' in session:
+        if session['role'] == 'volunteer':
+            return redirect(url_for('volunteer'))
         user = User.getUser(session['user'])
         info = user.getInfo()
         return render_template('dash.html', user = user, info=info)
@@ -155,7 +157,8 @@ def serve_photo(person_id):
 
 @app.route('/volunteer')
 def volunteer():
-    voln = Volunteer.getVolunteer(1)
+    voln = Volunteer.getVolunteer(session['user'])
+    user = User.getUser(session['user'])
     info = voln.getInfo()
     return render_template('dash.html', voln=voln, info=info)
 

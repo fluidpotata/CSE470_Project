@@ -40,9 +40,7 @@ class Volunteer(db.Model):
         db.session.commit()
     
     def getInfo(self):
-        query = db.session.query(WorkAssigned, User.name).join(Volunteer, WorkAssigned.volnID == Volunteer.volunteerid).join(User, Volunteer.userID == User.id).filter(WorkAssigned.volnID == self.volunteerid)
-        res = query.all()
-        return res
+        return self
 
 class WorkAssigned(db.Model):
     __tablename__ = 'workAssigned'
