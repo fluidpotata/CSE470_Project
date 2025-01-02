@@ -1,6 +1,7 @@
 import sqlite3
 import os
 from flask import Flask, render_template, request, flash, redirect, url_for, session
+from werkzeug.utils import secure_filename
 from models import *
 from database import db, init_db
 import logging
@@ -120,6 +121,27 @@ def donateblood():
     result = User.donate_blood(id)
     return render_template('dash.html', info=result)
 
+
+@app.route('/missingperson', methods=['GET', 'POST'])
+def missingperson():
+    if request.method == 'GET':
+        return render_template('missingperson.html')
+    elif request.method == 'POST':
+        name = request.form['personName']
+        last_seen = request.form['lastSeen']
+        contact_number = request.form['contactNumber']
+        photo = request.files['uploadPhoto'].read()
+
+        MissingPerson(name, last_seen, contact_number, photo)
+        is_success = MissingPerson.registerMissing()
+
+        if is_success:
+            flash('Missing person report submitted successfully.', 'success')
+            return redirect(url_for('dashboard'))
+        else:
+            flash('Failed to submit the missing person report.', 'danger')
+            return render_template('missingperson.html')
+        
 
 @app.route('/logout' , methods=['GET', 'POST'])
 def logout():
