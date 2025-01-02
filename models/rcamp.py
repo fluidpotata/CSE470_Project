@@ -11,12 +11,13 @@ class Rcamp(db.Model):
     v_occupied = db.Column(db.Integer, nullable=False)
     v_id = db.Column(db.Integer, db.ForeignKey('volunteers.volunteerid'), nullable=False)
 
-    def __init__(self, id, name, location, v_capacity, v_occupied):
+    def __init__(self, id, name, location, v_capacity, v_occupied, v_id):
         self.id = id
         self.name = name
         self.location = location
         self.v_capacity = v_capacity
         self.v_occupied = v_occupied
+        self.v_id = v_id
         
 
     @staticmethod

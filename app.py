@@ -160,7 +160,7 @@ def volunteer():
     voln = Volunteer.getVolunteer(session['user'])
     user = User.getUser(session['user'])
     info = voln.getInfo()
-    return render_template('dash.html', voln=voln, info=info, user=user)
+    return render_template('vdash.html', voln=voln, info=info, user=user)
 
 
 @app.route('/resources')
@@ -213,7 +213,10 @@ def r_camp_info():
     elif request.method == 'POST':
         v_cap = request.form['v_capacity']
         v_occ = request.form['v_occupied']
-        return Rcamp.update_camp(v_cap, v_occ)
+        id = request.form['id']
+        result = Rcamp.query.filter_by(id = id).first()
+        result.update_camp(v_cap, v_occ)
+        return redirect(url_for('r_camp_info'))
 
 @app.route('/emergency_directory')
 def emergency_directory():

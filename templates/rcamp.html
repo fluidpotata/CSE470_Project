@@ -55,7 +55,8 @@
                                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                 </div>
                                 <div class="modal-body">
-                                    <form id="updateCampForm">
+                                    <form id="updateCampForm" method="POST">
+                                        <input type="hidden" name="id" value="{{ rcamp.id }}">
                                         <div class="mb-3">
                                             <label for="campName" class="form-label">Relief Camp Name</label>
                                             <input type="text" class="form-control" id="campName" name="name" value="{{ rcamp.name }}" readonly>
