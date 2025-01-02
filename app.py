@@ -160,7 +160,7 @@ def volunteer():
     voln = Volunteer.getVolunteer(session['user'])
     user = User.getUser(session['user'])
     info = voln.getInfo()
-    return render_template('dash.html', voln=voln, info=info)
+    return render_template('dash.html', voln=voln, info=info, user=user)
 
 
 @app.route('/resources')
