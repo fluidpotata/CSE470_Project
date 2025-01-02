@@ -1,4 +1,5 @@
 from database import *
+from flask_sqlalchemy import func
 
 class Donation(db.Model):
     __tablename__ = "donations"
@@ -24,4 +25,6 @@ class Donation(db.Model):
         db.session.commit()
 
 
-    
+    @staticmethod
+    def total_donation():
+        return Donation.query.with_entities(func.sum(Donation.amount)).scalar()
