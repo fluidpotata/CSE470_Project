@@ -186,6 +186,11 @@ def update_disaster(volunteer_id):
 
     ongoing_disaster = OngoingDisaster.query.filter_by(volunteer_id=volunteer_id).first()
     return render_template('update_disaster.html', volunteer_id=volunteer_id, ongoing_disaster=ongoing_disaster)
+@app.route('/emergency_directory')
+def emergency_directory():
+    directory = EmergencyDirectory.query.all()
+    return render_template('emergency_directory.html', directory=directory)
+
 
 
 # Main entry point
