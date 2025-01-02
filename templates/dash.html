@@ -43,8 +43,13 @@
             </div>
             <div class="col-md-4">
                 <div class="box">
-                    <p>Ready to Donate Blood?</p>
-                    <a href="/donateblood" class="btn btn-primary">Donate Blood</a>
+                    <form action="/donateblood" method="post">
+                        {% if info["blood_donation"] == "False" %}
+                            <button type="submit" class= "btn btn-primary">Set Yourself Not Donor</button>
+                        {% else %}
+                            <button type="submit" class= "btn btn-primary">Donate Blood</button>
+                        {% endif %}
+                    </form>
                 </div>
             </div>
             <div class="col-md-4">

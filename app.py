@@ -112,6 +112,20 @@ def r_camp_info(v_cap, v_occ):
     elif request.method == 'POST':
         return Rcamp.update_camp(v_cap, v_occ)
 
+@app.route('/donateblood', methods = ["GET", "POST"])
+def donateblood():
+    if session.get('user') is None:
+        return redirect(url_for('login'))
+    id = session['user']
+    result = User.donate_blood(id)
+    return render_template('dash.html', info=result)
+
+
+@app.route('/logout' , methods=['GET', 'POST'])
+def logout():
+    session.pop('user', None)
+    return redirect(url_for('home'))
+
 # Main entry point
 if __name__ == '__main__':
     app.run(debug=True)

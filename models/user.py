@@ -15,6 +15,7 @@ class User(db.Model):
     contact = db.Column(db.String(20), nullable=False)
     blood_type = db.Column(db.String(3), nullable=False)
     role = db.Column(db.String(20), default='user', nullable=False)
+    blood_donation = db.Column(db.String(6), default=False )
 
     def __repr__(self):
         return f'<User {self.username}>'
@@ -63,9 +64,21 @@ class User(db.Model):
             'email': self.email,
             'address': self.address,
             'contact': self.contact,
-            'blood_type': self.blood_type
+            'blood_type': self.blood_type,
+            'blood_donation': self.blood_donation
         }
     
     @staticmethod
     def getUser(id):
         return User.query.filter_by(id=id).first()
+    
+    @staticmethod
+    def donate_blood(id):
+        user = User.getUser(id)
+        if user.blood_donation == "False":
+            user.blood_donation = "True"
+        else:
+            user.blood_donation = "False"
+        db.session.commit()
+        return user
+     
