@@ -81,4 +81,13 @@ class User(db.Model):
             user.blood_donation = "False"
         db.session.commit()
         return user
-     
+    
+
+    @staticmethod
+    def getAlluser():
+        return User.query.order_by(User.address, User.blood_type).all()
+    
+
+    @staticmethod
+    def filter_bloodbank(blood_type, address):
+        return User.query.filter_by(blood_type=blood_type, address=address).all()   

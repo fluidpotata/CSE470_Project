@@ -122,6 +122,18 @@ def donateblood():
     return render_template('dash.html', info=result)
 
 
+@app.route('/bloodavailability', methods=['GET', 'POST'])
+def bloodavailability():
+    if request.method == 'GET':
+        user = User.getAlluser()
+        return render_template('bloodavailability.html', user=user)
+    elif request.method == 'POST':
+        bloodgroup = request.form['bloodgroup']
+        location = request.form['location']
+        is_success = User.filter_bloodbank(bloodgroup, location)
+        return redirect(url_for('dashboard'))
+
+
 @app.route('/missingperson', methods=['GET', 'POST'])
 def missingperson():
     if request.method == 'GET':
