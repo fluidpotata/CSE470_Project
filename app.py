@@ -175,6 +175,18 @@ def serve_photo(person_id):
 def logout():
     session.pop('user', None)
     return redirect(url_for('home'))
+@app.route('/update_disaster/<volunteer_id>', methods=['GET', 'POST'])
+def update_disaster(volunteer_id):
+    if request.method == 'POST':
+        disaster_type = request.form['disaster_type']
+        location = request.form['location']
+        OngoingDisaster.addOrUpdateDisaster(volunteer_id, disaster_type, location)
+        flash("Disaster updated successfully", 'success')
+        return redirect(url_for('volunteer'))
+
+    ongoing_disaster = OngoingDisaster.query.filter_by(volunteer_id=volunteer_id).first()
+    return render_template('update_disaster.html', volunteer_id=volunteer_id, ongoing_disaster=ongoing_disaster)
+
 
 # Main entry point
 if __name__ == '__main__':
