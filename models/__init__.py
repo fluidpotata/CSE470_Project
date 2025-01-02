@@ -6,3 +6,4 @@ from models.rcamp import Rcamp
 from models.Incident import Incident
 from models.resources import Resource
 from models.donation import Donation
+from models.missingpersons import MissingPerson
