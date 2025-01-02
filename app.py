@@ -20,9 +20,11 @@ init_db(app)
 logging.basicConfig(level=logging.DEBUG)
 logger = logging.getLogger(__name__)
 
+
 @app.route('/')
 def index():
     return render_template('index.html')
+
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -42,11 +44,6 @@ def login():
             # return render_template('login.html', is_success=is_success)
             return render_template('login.html', msg={'class':'text-danger bg-warning','content':"Username or password incorrect"})
 
-@app.route('/volunteer')
-def volunteer():
-    voln = Volunteer.getVolunteer(1)
-    info = voln.getInfo()
-    return render_template('dash.html', voln=voln, info=info)
 
 @app.route('/signup', methods=['GET', 'POST'])
 def signup():
@@ -70,7 +67,6 @@ def signup():
         else:
             flash(is_success[1],'danger')
             return redirect(url_for('signup'))
-
 
 
 @app.route('/dashboard')
@@ -97,13 +93,6 @@ def makeDonation():
     return redirect(url_for('login'))
 
 
-@app.route('/resources')
-def resources_dashboard():
-    resources = [
-        {'id': 1, 'type': 'type', 'quantity': 15, 'location': 'Tangail'}
-    ]
-    return render_template('resources_dashboard.html', resources=resources, user=user)
-
 @app.route('/rcamp', methods=['GET', 'POST'])
 def r_camp_info():
     if "role" in session:
@@ -119,6 +108,7 @@ def r_camp_info():
         v_cap = request.form['v_capacity']
         v_occ = request.form['v_occupied']
         return Rcamp.update_camp(v_cap, v_occ)
+
 
 @app.route('/donateblood', methods = ["GET", "POST"])
 def donateblood():
@@ -139,7 +129,6 @@ def bloodavailability():
         location = request.form['location']
         is_success = User.filter_bloodbank(bloodgroup, location)
         return render_template('bloodavailability.html', user=is_success)
-
 
 
 @app.route('/missingperson', methods=['GET', 'POST'])
@@ -178,6 +167,21 @@ def serve_photo(person_id):
     return response
 
 
+@app.route('/volunteer')
+def volunteer():
+    voln = Volunteer.getVolunteer(1)
+    info = voln.getInfo()
+    return render_template('dash.html', voln=voln, info=info)
+
+
+@app.route('/resources')
+def resources_dashboard():
+    resources = [
+        {'id': 1, 'type': 'type', 'quantity': 15, 'location': 'Tangail'}
+    ]
+    return render_template('resources_dashboard.html', resources=resources, user=user)
+
+
 @app.route('/allocatedonation', methods=['GET', 'POST'])
 def allocatedonation():
     if request.method == 'GET':
@@ -193,10 +197,7 @@ def allocatedonation():
             flash('Not enough balance!', 'danger')
             return redirect(url_for('allocatedonation'))
 
-@app.route('/logout' , methods=['GET', 'POST'])
-def logout():
-    session.pop('user', None)
-    return redirect(url_for('home'))
+
 @app.route('/update_disaster/<volunteer_id>', methods=['GET', 'POST'])
 def update_disaster(volunteer_id):
     if request.method == 'POST':
@@ -208,13 +209,19 @@ def update_disaster(volunteer_id):
 
     ongoing_disaster = OngoingDisaster.query.filter_by(volunteer_id=volunteer_id).first()
     return render_template('update_disaster.html', volunteer_id=volunteer_id, ongoing_disaster=ongoing_disaster)
+
+
 @app.route('/emergency_directory')
 def emergency_directory():
     directory = EmergencyDirectory.query.all()
     return render_template('emergency_directory.html', directory=directory)
 
 
+@app.route('/logout' , methods=['GET', 'POST'])
+def logout():
+    session.pop('user', None)
+    return redirect(url_for('home'))
 
-# Main entry point
+
 if __name__ == '__main__':
     app.run(debug=True)
