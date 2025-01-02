@@ -15,7 +15,7 @@ class User(db.Model):
     contact = db.Column(db.String(20), nullable=False)
     blood_type = db.Column(db.String(3), nullable=False)
     role = db.Column(db.String(20), default='user', nullable=False)
-    blood_donation = db.Column(db.String(6), default=False )
+    blood_donation = db.Column(db.String(6))
 
     def __repr__(self):
         return f'<User {self.username}>'

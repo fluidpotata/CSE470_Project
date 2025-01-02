@@ -43,13 +43,11 @@
             </div>
             <div class="col-md-4">
                 <div class="box">
-                    <form action="/donateblood" method="post">
-                        {% if info["blood_donation"] == "False" %}
-                            <button type="submit" class= "btn btn-primary">Set Yourself Not Donor</button>
-                        {% else %}
-                            <button type="submit" class= "btn btn-primary">Donate Blood</button>
-                        {% endif %}
-                    </form>
+                    {% if info["blood_donation"] == "True" %}
+                        <a href="/donateblood" class= "btn btn-primary">Set Yourself Not Donor</a>
+                    {% else %}
+                        <a href="/donateblood" class= "btn btn-primary">Donate Blood</a>
+                    {% endif %}
                 </div>
             </div>
             <div class="col-md-4">
@@ -67,6 +65,12 @@
             <div class="col-md-4">
                 <div class="box">
                     <p>Want to contribute financially?</p>
+                    <a href="/makedonation" class="btn btn-primary">Donate Here</a>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="box">
+                    <p>Check Blood Availability</p>
                     <a href="/makedonation" class="btn btn-primary">Donate Here</a>
                 </div>
             </div>
