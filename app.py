@@ -11,7 +11,6 @@ app = Flask(__name__)
 app.secret_key = 'your-secret-key'
 
 
-# Configure SQLite database
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///main.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
@@ -170,12 +169,27 @@ def viewmissing():
 @app.route('/photo/<int:person_id>')
 def serve_photo(person_id):
     person = MissingPerson.getMissingPersonByParam(id=person_id)
-    photo_data = person.photo  # Assume this is the binary data
+    photo_data = person.photo
     
-    # Serve image as response
     response = make_response(photo_data)
-    response.headers.set('Content-Type', 'image/jpeg')  # Adjust if PNG or other format
+    response.headers.set('Content-Type', 'image/jpeg')
     return response
+
+
+@app.route('/allocatedonation', methods=['GET', 'POST'])
+def allocatedonation():
+    if request.method == 'GET':
+        return render_template('allocatedonation.html', available=Allocation.available_fund())
+    elif request.method == 'POST':
+        description = request.form['description']
+        amount = request.form['amount']
+        date = request.form['date']
+        if Allocation.add_allocation(description, amount, date):
+            flash('Allocation successful', 'success')
+            return redirect(url_for('dashboard'))
+        else:
+            flash('Not enough balance!', 'danger')
+            return redirect(url_for('allocatedonation'))
 
 @app.route('/logout' , methods=['GET', 'POST'])
 def logout():
