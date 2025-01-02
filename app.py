@@ -105,7 +105,7 @@ def resources_dashboard():
     return render_template('resources_dashboard.html', resources=resources, user=user)
 
 @app.route('/rcamp', methods=['GET', 'POST'])
-def r_camp_info(v_cap, v_occ):
+def r_camp_info():
     if "role" in session:
         if session['role'] != 'volunteer':
             return redirect(url_for('login'))
@@ -116,6 +116,8 @@ def r_camp_info(v_cap, v_occ):
         result = Rcamp.get_camp_status(v_id)
         return render_template('rcamp.html', rcamp=result)
     elif request.method == 'POST':
+        v_cap = request.form['v_capacity']
+        v_occ = request.form['v_occupied']
         return Rcamp.update_camp(v_cap, v_occ)
 
 @app.route('/donateblood', methods = ["GET", "POST"])

@@ -4,15 +4,16 @@ from models.user import User
 class Volunteer(db.Model):
     __tablename__ = 'volunteers'
     
-    volunteerid = db.Column(db.String, primary_key=True, autoincrement=True)
+    volunteerid = db.Column(db.Integer, primary_key=True, autoincrement=True)
     role = db.Column(db.String)
     availability = db.Column(db.String)
     userId = db.Column(db.Integer, db.ForeignKey('users.id')) 
     
-    def __init__(self, volunteerid, role, availability):
+    def __init__(self, volunteerid, role, availability, userId):
         self.volunteerid = volunteerid
         self.role = role
         self.availability = availability
+        self.userId = userId
 
     def assignTask(self, task):
         pass
