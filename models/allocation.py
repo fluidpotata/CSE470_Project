@@ -1,8 +1,8 @@
 from database import *
-from flask_sqlalchemy import func
+from sqlalchemy.sql import func
 from models.donation import Donation
 
-class Allocation(db.model):
+class Allocation(db.Model):
     __tablename__ = "fundallocations"
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     details = db.Column(db.String(500))

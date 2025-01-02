@@ -1,5 +1,5 @@
 from database import *
-from flask_sqlalchemy import func
+from sqlalchemy.sql import func
 
 class Donation(db.Model):
     __tablename__ = "donations"
