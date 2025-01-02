@@ -46,7 +46,9 @@ class MissingPerson(db.Model):
         return MissingPerson.query.all()
     
     @staticmethod
-    def getMissingPersonByParam(name=None, last_location=None):
+    def getMissingPersonByParam(id=None,name=None, last_location=None):
+        if id:
+            return MissingPerson.query.filter_by(missingid=id).first()
         if name:
             return MissingPerson.query.filter_by(name=name).all()
         if last_location:

@@ -1,6 +1,6 @@
 import sqlite3
 import os
-from flask import Flask, render_template, request, flash, redirect, url_for, session
+from flask import Flask, render_template, request, flash, redirect, url_for, session, make_response
 from werkzeug.utils import secure_filename
 from models import *
 from database import db, init_db
@@ -125,23 +125,38 @@ def donateblood():
 @app.route('/missingperson', methods=['GET', 'POST'])
 def missingperson():
     if request.method == 'GET':
-        return render_template('missingperson.html')
+        return render_template('registermissing.html')
     elif request.method == 'POST':
         name = request.form['personName']
         last_seen = request.form['lastSeen']
         contact_number = request.form['contactNumber']
         photo = request.files['uploadPhoto'].read()
 
-        MissingPerson(name, last_seen, contact_number, photo)
-        is_success = MissingPerson.registerMissing()
+        mperson = MissingPerson(name, last_seen, contact_number, photo)
+        is_success = mperson.registerMissing()
 
         if is_success:
             flash('Missing person report submitted successfully.', 'success')
             return redirect(url_for('dashboard'))
         else:
             flash('Failed to submit the missing person report.', 'danger')
-            return render_template('missingperson.html')
-        
+            return render_template('registermissing.html')
+
+
+@app.route('/viewmissing', methods=['GET', 'POST'])
+def viewmissing():
+    missingpersons = MissingPerson.getMissingPersons()
+    return render_template('showmissingpersons.html', missingpersons=missingpersons)
+
+@app.route('/photo/<int:person_id>')
+def serve_photo(person_id):
+    person = MissingPerson.getMissingPersonByParam(id=person_id)
+    photo_data = person.photo  # Assume this is the binary data
+    
+    # Serve image as response
+    response = make_response(photo_data)
+    response.headers.set('Content-Type', 'image/jpeg')  # Adjust if PNG or other format
+    return response
 
 @app.route('/logout' , methods=['GET', 'POST'])
 def logout():

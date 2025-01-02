@@ -1,4 +1,4 @@
-{%extend "base.html" %}
+{%extends "base.html" %}
 
 {%block title%}Register Missing{%endblock%}
 
@@ -6,9 +6,21 @@
 <div class="container mt-5">
     <div class="card shadow-lg">
         <div class="card-body">
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    <div class="alert alert-dismissible fade show" role="alert">
+                        {% for category, message in messages %}
+                            <div class="alert alert-{{ category }}">
+                                {{ message }}
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            {% endwith %}
             <h4 class="text-center mb-4">Missing Person Report</h4>
 
-            <form>
+            <form action="/missingperson" method="POST" enctype="multipart/form-data">
                 <div class="mb-3">
                     <label for="personName" class="form-label">Name of Person</label>
                     <input type="text" name="personName" class="form-control" id="personName" placeholder="Enter the name of the missing person">
