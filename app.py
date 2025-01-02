@@ -107,6 +107,12 @@ def resources_dashboard():
 
 @app.route('/rcamp', methods=['GET', 'POST'])
 def r_camp_info(v_cap, v_occ):
+    if "role" in session:
+        if session['role'] != 'volunteer':
+            return redirect(url_for('login'))
+    v_id = session['user']
+    if Volunteer.getVolunteer(v_id) is None:
+        return redirect(url_for('login'))
     if request.method == 'GET':
         result = Rcamp.get_camp_status(v_id)
         return render_template('rcamp.html', rcamp=result)

@@ -7,6 +7,7 @@ class Volunteer(db.Model):
     volunteerid = db.Column(db.String, primary_key=True, autoincrement=True)
     role = db.Column(db.String)
     availability = db.Column(db.String)
+    userId = db.Column(db.Integer, db.ForeignKey('users.id')) 
     
     def __init__(self, volunteerid, role, availability):
         self.volunteerid = volunteerid
@@ -24,8 +25,8 @@ class Volunteer(db.Model):
         return volunteer
 
     @staticmethod
-    def getVolunteer(volunteerid):
-        return Volunteer.query.filter_by(volunteerid=volunteerid).first()
+    def getVolunteer(userId):
+        return Volunteer.query.filter_by(userId=userId).first()
 
     def trackActivity(self):
         pass

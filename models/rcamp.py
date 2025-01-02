@@ -9,6 +9,7 @@ class Rcamp(db.Model):
     location = db.Column(db.String(100), nullable=False)
     v_capacity = db.Column(db.Integer, nullable=False)
     v_occupied = db.Column(db.Integer, nullable=False)
+    v_id = db.Column(db.Integer, db.ForeignKey('volunteers.volunteerid'), nullable=False)
 
     def __init__(self, id, name, location, v_capacity, v_occupied):
         self.id = id
@@ -16,6 +17,7 @@ class Rcamp(db.Model):
         self.location = location
         self.v_capacity = v_capacity
         self.v_occupied = v_occupied
+        
 
     @staticmethod
     def addcamp(id, name, location, v_capacity, v_occupied):
@@ -26,15 +28,9 @@ class Rcamp(db.Model):
 
     @staticmethod
     def get_camp_status(v_id):
-        query1 = '''select assignedIN from workAssigned where volnID = :v_id;'''
-        arr = db.session.execute(query1, {'v_id': v_id}).fetchall()
-        if not arr:
-            return None
-        query2 = '''select * from Reliefcamp where rcampID = :rcamp_id;'''
-        result = db.session.execute(query2, {'rcamp_id': arr[0][0]}).fetchall()
-        if not result:
-            return None
-        return Rcamp(result[0][0], result[0][1], result[0][2], result[0][3], result[0][4])
+        camp = Rcamp.query.filter_by(v_id=v_id).first()
+        return camp
+        
 
     def track_resources(self):
         pass
