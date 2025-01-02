@@ -1,13 +1,14 @@
 import sqlite3
 import os
 from flask import Flask, render_template, request, flash, redirect, url_for, session
-from models import User, Volunteer, Rcamp
+from models import *
 from database import db, init_db
 import logging
+from datetime import datetime
 
 app = Flask(__name__)
 app.secret_key = 'your-secret-key'
-user = None
+
 
 # Configure SQLite database
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///main.db'
@@ -74,8 +75,26 @@ def signup():
 
 @app.route('/dashboard')
 def dashboard():
-    info = user.getInfo()
-    return render_template('dash.html', user=user, info=info)
+    if 'user' in session:
+        user = User.getUser(session['user'])
+        info = user.getInfo()
+        return render_template('dash.html', user = user, info=info)
+    return redirect(url_for('login'))
+
+
+@app.route('/makedonation', methods=['GET', 'POST'])
+def makeDonation():
+    if session.get('user') is not None:
+        if request.method == 'POST':
+            donorid = session['user']
+            method = request.form['method']
+            amount = request.form['amount']
+            date = datetime.now().strftime('%m-%d-%Y')
+            tid = request.form['tid']
+            Donation.add_donation(method, donorid, amount, date, tid)
+            return redirect(url_for('dashboard'))
+        return render_template('makedonation.html')
+    return redirect(url_for('login'))
 
 
 @app.route('/resources')

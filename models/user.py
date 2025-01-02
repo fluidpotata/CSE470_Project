@@ -65,3 +65,7 @@ class User(db.Model):
             'contact': self.contact,
             'blood_type': self.blood_type
         }
+    
+    @staticmethod
+    def getUser(id):
+        return User.query.filter_by(id=id).first()
