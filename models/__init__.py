@@ -7,3 +7,5 @@ from models.Incident import Incident
 from models.resources import Resource
 from models.donation import Donation
 from models.missingpersons import MissingPerson
+from models.ongoing_dis import OngoingDisaster
+from models.emergency_directory import EmergencyDirectory
