@@ -85,9 +85,10 @@ class User(db.Model):
 
     @staticmethod
     def getAlluser():
-        return User.query.order_by(User.address, User.blood_type).all()
+        return User.query.filter_by(blood_donation="True").order_by(User.address, User.blood_type).all()
+
     
 
     @staticmethod
     def filter_bloodbank(blood_type, address):
-        return User.query.filter_by(blood_type=blood_type, address=address).all()   
+        return User.query.filter(User.blood_donation=="True", User.blood_type==blood_type, User.address.like(f"%{address}%")).all()  

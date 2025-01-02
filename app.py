@@ -119,7 +119,7 @@ def donateblood():
         return redirect(url_for('login'))
     id = session['user']
     result = User.donate_blood(id)
-    return render_template('dash.html', info=result)
+    return redirect(url_for('dashboard'))
 
 
 @app.route('/bloodavailability', methods=['GET', 'POST'])
@@ -131,7 +131,8 @@ def bloodavailability():
         bloodgroup = request.form['bloodgroup']
         location = request.form['location']
         is_success = User.filter_bloodbank(bloodgroup, location)
-        return redirect(url_for('dashboard'))
+        return render_template('bloodavailability.html', user=is_success)
+
 
 
 @app.route('/missingperson', methods=['GET', 'POST'])
