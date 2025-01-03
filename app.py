@@ -228,6 +228,32 @@ def emergency_directory():
 def logout():
     session.pop('user', None)
     return redirect(url_for('index'))
+@app.route('/resources')
+def resources_dashboard():
+    resources = Resource.query.all()
+    return render_template('resources.html', resources=resources)
+
+@app.route('/add-resource', methods=['GET', 'POST'])
+def add_resource():
+    if request.method == 'POST':
+        campID = request.form['campID']
+        type = request.form['type']
+        quantity = request.form['quantity']
+        location = request.form['location']
+        
+        Resource.addResource(campID, type, quantity, location)
+        flash("Resource added successfully!", "success")
+        return redirect(url_for('resources_dashboard'))
+    return render_template('add_resource.html')
+
+@app.route('/update-resource/<int:resID>', methods=['POST'])
+def update_resource(resID):
+    if request.method == 'POST':
+        quantity = request.form['quantity']
+        Resource.updateResource(resID, quantity)
+        flash("Resource updated successfully!", "success")
+        return redirect(url_for('resources_dashboard'))
+
 
 
 if __name__ == '__main__':
