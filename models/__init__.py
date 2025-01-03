@@ -11,3 +11,4 @@ from models.ongoing_dis import OngoingDisaster
 from models.emergency_directory import EmergencyDirectory
 from models.allocation import Allocation
 from models.workassigned import WorkAssigned
+from models.apply_volunteer import ApplyVolunteer
