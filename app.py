@@ -274,7 +274,11 @@ def update_resource(resID):
         flash("Resource updated successfully!", "success")
         return redirect(url_for('resources_dashboard'))
 
-
+@app.route('/apply_volunteer', methods=['POST'])
+def apply_volunteer():
+    if request.method == 'POST':
+        email = request.form['email']
+        
 
 if __name__ == '__main__':
     app.run(debug=True)
