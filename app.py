@@ -163,12 +163,7 @@ def volunteer():
     return render_template('vdash.html', voln=voln, info=info, user=user)
 
 
-@app.route('/resources')
-def resources_dashboard():
-    resources = [
-        {'id': 1, 'type': 'type', 'quantity': 15, 'location': 'Tangail'}
-    ]
-    return render_template('resources.html', resources=resources, user=user)
+
 
 
 @app.route('/allocatedonation', methods=['GET', 'POST'])
@@ -228,6 +223,11 @@ def emergency_directory():
 def logout():
     session.pop('user', None)
     return redirect(url_for('index'))
+@app.route('/resources')
+def resources_dashboard():
+    resources = Resource.query.all()
+    return render_template('resources.html', resources=resources)
+
 @app.route('/resources')
 def resources_dashboard():
     resources = Resource.query.all()
