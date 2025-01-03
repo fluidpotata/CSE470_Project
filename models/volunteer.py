@@ -42,9 +42,3 @@ class Volunteer(db.Model):
     def getInfo(self):
         return self
 
-class WorkAssigned(db.Model):
-    __tablename__ = 'workAssigned'
-    
-    id = db.Column(db.Integer, primary_key=True)
-    volnID = db.Column(db.String, db.ForeignKey('volunteers.volunteerid'))
-    # other fields...
