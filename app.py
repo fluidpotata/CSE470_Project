@@ -168,7 +168,7 @@ def resources_dashboard():
     resources = [
         {'id': 1, 'type': 'type', 'quantity': 15, 'location': 'Tangail'}
     ]
-    return render_template('resources_dashboard.html', resources=resources, user=user)
+    return render_template('resources.html', resources=resources, user=user)
 
 
 @app.route('/allocatedonation', methods=['GET', 'POST'])
@@ -227,7 +227,7 @@ def emergency_directory():
 @app.route('/logout' , methods=['GET', 'POST'])
 def logout():
     session.pop('user', None)
-    return redirect(url_for('home'))
+    return redirect(url_for('index'))
 
 
 if __name__ == '__main__':

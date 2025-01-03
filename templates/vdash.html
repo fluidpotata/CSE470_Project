@@ -51,13 +51,19 @@
                         </a>
                     </div>
                 </div>
-            </div>
-            <div class="row g-4 pt-4">
                 <div class="col-md-4">
                     <div class="box">
                         <p>Any disaster ongoing?</p>
                         <a href="{{ url_for('update_disaster', volunteer_id=voln.volunteerid) }}" class="btn btn-secondary">
                         Add a disaster
+                        </a>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="box">
+                        <p>Manage Resources in your Relief Camp</p>
+                        <a href="{{ url_for('update_disaster', volunteer_id=voln.volunteerid) }}" class="btn btn-secondary">
+                        Manage
                         </a>
                     </div>
                 </div>
