@@ -316,7 +316,17 @@ def updatevolunteer():
             if request.method == 'POST': 
                 v_id = request.form['volunteer_id']
                 r_id = request.form['camp_id']
-                assigned = WorkAssigned.query.filter_by(volunteer_id = v_id).first()
+                assigned = WorkAssigned.query.filter_by(volnID = v_id).first()
+                if assigned:
+                    assigned.rcamp_id = r_id
+                    flash("Volunteer already assigned", "danger")
+                elif v_id and r_id:
+                    new_assignment = WorkAssigned(volnID=v_id, rcamp_id=r_id)
+                    db.session.add(new_assignment)
+                    db.session.commit()
+                    flash("Volunteer assigned successfully", "success")
+                else:
+                    flash("Some Error", "danger")
                 return redirect(url_for('updatevolunteer'))
             return render_template('volnlist.html', user = User, volunteers= Volunteer.getAllVolunteers(), camps = Rcamp.get_all_camps())
         
