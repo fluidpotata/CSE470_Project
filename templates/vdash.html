@@ -31,21 +31,33 @@
             <div class="row g-4">
                 <div class="col-md-4">
                     <div class="box">
-                        <p>You are assigned as:</p>
+                        <p>You are currently assigned as:</p>
                         <h3>{{ voln.role }}</h3>
                     </div>
                 </div>
                 <div class="col-md-4">
                     <div class="box">
+                        <p>View/Update Emergency Directory?</p>
                         <a href="{{ url_for('emergency_directory') }}" class="btn btn-secondary">
-                        View Emergency Directory
+                        Manage
                         </a>
                     </div>
                 </div>
                 <div class="col-md-4">
                     <div class="box">
+                        <p>Manage your assigned Relief Camp</p>
                         <a href="{{ url_for('r_camp_info') }}" class="btn btn-secondary">
-                        View Relief Camp
+                        View/Update Relief Camp
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="row g-4 pt-4">
+                <div class="col-md-4">
+                    <div class="box">
+                        <p>Any disaster ongoing?</p>
+                        <a href="{{ url_for('update_disaster', volunteer_id=voln.volunteerid) }}" class="btn btn-secondary">
+                        Add a disaster
                         </a>
                     </div>
                 </div>

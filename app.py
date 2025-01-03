@@ -197,7 +197,7 @@ def update_disaster(volunteer_id):
         return redirect(url_for('volunteer'))
 
     ongoing_disaster = OngoingDisaster.query.filter_by(volunteer_id=volunteer_id).first()
-    return render_template('update_disaster.html', volunteer_id=volunteer_id, ongoing_disaster=ongoing_disaster)
+    return render_template('update_add_dis.html', volunteer_id=volunteer_id, ongoing_disaster=ongoing_disaster)
 
 @app.route('/rcamp', methods=['GET', 'POST'])
 def r_camp_info():
