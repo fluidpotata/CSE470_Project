@@ -1,7 +1,6 @@
 import sqlite3
 import os
 from flask import Flask, render_template, request, flash, redirect, url_for, session, make_response
-from werkzeug.utils import secure_filename
 from models import *
 from database import db, init_db
 import logging
@@ -95,9 +94,6 @@ def makeDonation():
     return redirect(url_for('login'))
 
 
-
-
-
 @app.route('/donateblood', methods = ["GET", "POST"])
 def donateblood():
     if session.get('user') is None:
@@ -155,15 +151,14 @@ def serve_photo(person_id):
     return response
 
 
+
+
 @app.route('/volunteer')
 def volunteer():
     voln = Volunteer.getVolunteer(session['user'])
     user = User.getUser(session['user'])
     info = voln.getInfo()
     return render_template('vdash.html', voln=voln, info=info, user=user)
-
-
-
 
 
 @app.route('/allocatedonation', methods=['GET', 'POST'])
