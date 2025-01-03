@@ -16,5 +16,10 @@ class EmergencyDirectory(db.Model):
         self.location = location
 
     @staticmethod
-    def get_all_contacts():
+    def get_all_contacts(param=None):
+        if param:
+            return EmergencyDirectory.query.filter((EmergencyDirectory.location.like(f'%{param}%')) |
+                                                   (EmergencyDirectory.name.like(f'%{param}%')) |
+                                                   (EmergencyDirectory.designation.like(f'%{param}%'))
+                                                   .all())
         return EmergencyDirectory.query.all()
