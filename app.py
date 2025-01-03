@@ -223,11 +223,7 @@ def emergency_directory():
 def logout():
     session.pop('user', None)
     return redirect(url_for('index'))
-@app.route('/resources')
-def resources_dashboard():
-    resources = Resource.query.all()
-    return render_template('resources.html', resources=resources)
-
+    
 @app.route('/resources')
 def resources_dashboard():
     resources = Resource.query.all()
