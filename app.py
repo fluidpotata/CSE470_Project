@@ -227,7 +227,7 @@ def emergency_directory():
                 econtact.updateContact(name, designation, contact, location)
                 return redirect(url_for('emergency_directory'))
             directory = EmergencyDirectory.query.all()
-            return render_template('emergency_directory_voln.htm', directory=directory)
+            return render_template('emergency_directory_voln.html', directory=directory)
     directory = EmergencyDirectory.query.all()
     return render_template('emergency_directory.html', directory=directory)
 
