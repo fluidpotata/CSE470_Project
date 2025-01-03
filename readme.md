@@ -18,10 +18,11 @@ __Supervising Faculty :__  <br><br>
 4. User can update blood donation info
 5. Volunteers can see their role
 6. Volunteers can update their assigned relief camp
+7. Volunteers can manage resources available
 7. ~~Volunteers can create new volunteer accounts~~
 8. ~~Coordinator volunteer can assign volunteers to relief camp~~
 9. Volunteers can allocate fund
-10. Voluntters can manage emergency directory
+10. Volunteers can manage emergency directory
 11. Anyone can see emergency directory
 12. Anyone can see emergency blood donation info
 13. Anyone can see missing persons registry
