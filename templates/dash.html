@@ -26,6 +26,34 @@
     </style>
 </head>
 <body>
+    <div class="navbar navbar-expand-lg bg-dark navbar-dark py-3"> 
+        <div class="container"> 
+          <a href="/" class="navbar-brand"> DMS </a>
+          <button 
+            class="navbar-toggler" 
+            type="button" 
+            data-bs-toggle="collapse" 
+            data-bs-target="#navmenu"> 
+          <span class="navbar-toggler-icon"></span> 
+          </button> 
+          <div class="collapse navbar-collapse" id="navmenu">
+            <ul class="navbar-nav ms-auto">
+              <li class="nav-item">
+                <a href = "/dashboard" class="nav-link">Dashboard</a>
+              </li>
+              <li class="nav-item">
+                <a href = "/viewmissing" class="nav-link">Missing Person Directory</a>
+              </li>
+              <li class="nav-item">
+                <a href = "/bloodavailability" class="nav-link">Blood Bank</a>
+              </li>
+              <li class="nav-item">
+                <a href = "/logout" class="nav-link">Logout</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
     <div class="container container-custom my-5">
         <h1 class="mb-4">Welcome, {{ info['name'] }}</h1>
         <div class="row g-4">
@@ -37,6 +65,7 @@
             </div>
             <div class="col-md-4">
                 <div class="box">
+                    <p>Update Blood Donation Status</p>
                     {% if info["blood_donation"] == "True" %}
                         <a href="/donateblood" class= "btn btn-primary">Set Yourself Not Donor</a>
                     {% else %}
