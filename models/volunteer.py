@@ -9,8 +9,7 @@ class Volunteer(db.Model):
     availability = db.Column(db.String)
     userId = db.Column(db.Integer, db.ForeignKey('users.id')) 
     
-    def __init__(self, volunteerid, role, availability, userId):
-        self.volunteerid = volunteerid
+    def __init__(self, role, availability, userId):
         self.role = role
         self.availability = availability
         self.userId = userId

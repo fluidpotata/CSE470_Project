@@ -14,3 +14,12 @@ class WorkAssigned(db.Model):
     def count_volunteers(rcamp_id):
         count = WorkAssigned.query.filter_by(rcamp_id = rcamp_id).count()
         return count
+    
+
+    @staticmethod
+    def getCampID(volnID):
+        wa = WorkAssigned.query.filter_by(volnID = volnID).first()
+        if wa:
+            return wa.rcamp_id
+        else:
+            return None
