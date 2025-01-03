@@ -43,7 +43,8 @@ def login():
                 return redirect(url_for('dashboard'))
             else:
                 # return render_template('login.html', is_success=is_success)
-                return render_template('login.html', msg={'class':'text-danger bg-warning','content':"Username or password incorrect"})
+                flash('Invalid username or password', 'danger')
+                return render_template('login.html')
 
 
 @app.route('/signup', methods=['GET', 'POST'])
@@ -203,7 +204,10 @@ def r_camp_info():
     if Volunteer.getVolunteer(v_id) is None:
         return redirect(url_for('login'))
     if request.method == 'GET':
-        result = Rcamp.get_camp_status(v_id)
+        rid = WorkAssigned.getCampID(v_id)
+        if rid is None:
+            return "You are not assigned to any Relief Camp"
+        result = Rcamp.get_camp(rid)
         occupied = WorkAssigned.count_volunteers(result.id)
         return render_template('rcamp.html', rcamp=result, occupied=occupied)
     elif request.method == 'POST':
@@ -247,10 +251,23 @@ def add_emergency_directory():
     return redirect(url_for('login'))
 
 
-@app.route('/logout' , methods=['GET', 'POST'])
-def logout():
-    session.pop('user', None)
+@app.route('/add_volunteer', methods=['GET','POST'])
+def add_volunteer():
+    if 'role' in session:
+        if session['role'] == 'volunteer':
+            voln = Volunteer.getVolunteer(session['user'])
+            if voln.role != 'coordinator':
+                return "You do not have access to it!"
+            if request.method == 'POST':
+                id = request.form['id']
+                stat = ApplyVolunteer.accept_application(id)
+                flash(stat[0], stat[1])
+                return redirect(url_for('volunteer'))
+            requests = ApplyVolunteer.get_all_applicant()
+            return render_template('add_volunteer.html', applicants=requests, user = User)
+        return redirect(url_for('dashboard'))
     return redirect(url_for('login'))
+
     
 @app.route('/resources')
 def resources_dashboard():
@@ -282,7 +299,19 @@ def update_resource(resID):
 def apply_volunteer():
     if request.method == 'POST':
         email = request.form['email']
+        application = ApplyVolunteer(email)
+        db.session.add(application)
+        db.session.commit()
+        flash("Application submitted successfully!", "success")
+        return redirect(url_for('dashboard'))
+
         
+
+@app.route('/logout' , methods=['GET', 'POST'])
+def logout():
+    session.pop('user', None)
+    return redirect(url_for('login'))
+
 
 if __name__ == '__main__':
     app.run(debug=True)

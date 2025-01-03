@@ -92,3 +92,8 @@ class User(db.Model):
     @staticmethod
     def filter_bloodbank(blood_type, address):
         return User.query.filter(User.blood_donation=="True", User.blood_type==blood_type, User.address.like(f"%{address}%")).all()  
+
+
+    @staticmethod
+    def get_user_by_email(email):
+        return User.query.filter_by(email=email).first()

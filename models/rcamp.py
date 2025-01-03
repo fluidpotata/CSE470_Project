@@ -28,8 +28,8 @@ class Rcamp(db.Model):
         return new_camp
 
     @staticmethod
-    def get_camp_status(v_id):
-        camp = Rcamp.query.filter_by(v_id=v_id).first()
+    def get_camp(id):
+        camp = Rcamp.query.filter_by(id=id).first()
         return camp
         
 
