@@ -204,7 +204,8 @@ def r_camp_info():
         return redirect(url_for('login'))
     if request.method == 'GET':
         result = Rcamp.get_camp_status(v_id)
-        return render_template('rcamp.html', rcamp=result)
+        occupied = WorkAssigned.count_volunteers(result.id)
+        return render_template('rcamp.html', rcamp=result, occupied=occupied)
     elif request.method == 'POST':
         v_cap = request.form['v_capacity']
         v_occ = request.form['v_occupied']

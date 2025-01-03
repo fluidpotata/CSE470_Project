@@ -7,8 +7,10 @@ class WorkAssigned(db.Model):
     volnID = db.Column(db.Integer, db.ForeignKey('volunteers.volunteerid'), primary_key=True)
     
     def __init__(self, rcamp_id, volnID):
-        self.id = rcamp_id
+        self.rcamp_id = rcamp_id
         self.volnID = volnID
 
-    def count_volunteers(self, rcamp_id):
-        WorkAssigned.query.filter_by(self.id == rcamp_id).count()
+    @staticmethod
+    def count_volunteers(rcamp_id):
+        count = WorkAssigned.query.filter_by(rcamp_id = rcamp_id).count()
+        return count
