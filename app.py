@@ -213,10 +213,34 @@ def r_camp_info():
         result.update_camp(v_cap, v_occ)
         return redirect(url_for('r_camp_info'))
 
-@app.route('/emergency_directory')
+@app.route('/emergency_directory', methods=['GET', 'POST'])
 def emergency_directory():
+    if 'role' in session:
+        if session['role'] == 'volunteer':
+            if request.method == 'POST':
+                id = request.form['id']
+                name = request.form['name']
+                designation = request.form['designation']
+                contact = request.form['contact']
+                location = request.form['location']
+                econtact = EmergencyDirectory.getContact(id)
+                econtact.updateContact(name, designation, contact, location)
+                return redirect(url_for('emergency_directory'))
+            directory = EmergencyDirectory.query.all()
+            return render_template('emergency_directory_voln.html', directory=directory)
     directory = EmergencyDirectory.query.all()
     return render_template('emergency_directory.html', directory=directory)
+
+
+@app.route('/add_emergency_directory', methods=['POST'])
+def add_emergency_directory():
+    if request.method == 'POST':
+        name = request.form['name']
+        designation = request.form['designation']
+        contact = request.form['contact']
+        location = request.form['location']
+        EmergencyDirectory.addEmergencyDirectory(name, designation, contact, location)
+        return redirect(url_for('emergency_directory'))
 
 
 @app.route('/logout' , methods=['GET', 'POST'])

@@ -14,6 +14,11 @@ class EmergencyDirectory(db.Model):
         self.designation = designation
         self.contact = contact
         self.location = location
+    
+
+    @staticmethod
+    def getContact(id):
+        return EmergencyDirectory.query.filter_by(id=id).first()
 
     @staticmethod
     def get_all_contacts(param=None):
@@ -23,3 +28,17 @@ class EmergencyDirectory(db.Model):
                                                    (EmergencyDirectory.designation.like(f'%{param}%'))
                                                    .all())
         return EmergencyDirectory.query.all()
+
+    
+    @staticmethod
+    def addEmergencyDirectory(name, designation, contact, location):
+        emergency_directory = EmergencyDirectory(name=name, designation=designation, contact=contact, location=location)
+        db.session.add(emergency_directory)
+        db.session.commit()
+
+    def updateContact(self, name, designation, contact, location):
+        self.name = name
+        self.designation = designation
+        self.contact = contact
+        self.location = location
+        db.session.commit()
