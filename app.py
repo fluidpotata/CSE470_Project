@@ -27,25 +27,29 @@ def index():
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
-    global user
-    if request.method == 'GET':
-        return render_template('login.html')
-    elif request.method == 'POST':
-        username = request.form['username']
-        password = request.form['password']
-        is_success = User.authenticate(username, password)
-        if is_success[0]:
-            user = is_success[1]
-            session['user'] = user.id
-            session['role'] = user.role
-            return redirect(url_for('dashboard'))
-        else:
-            # return render_template('login.html', is_success=is_success)
-            return render_template('login.html', msg={'class':'text-danger bg-warning','content':"Username or password incorrect"})
+    if 'user' in session:
+        return redirect(url_for('dashboard'))
+    else:
+        if request.method == 'GET':
+            return render_template('login.html')
+        elif request.method == 'POST':
+            username = request.form['username']
+            password = request.form['password']
+            is_success = User.authenticate(username, password)
+            if is_success[0]:
+                user = is_success[1]
+                session['user'] = user.id
+                session['role'] = user.role
+                return redirect(url_for('dashboard'))
+            else:
+                # return render_template('login.html', is_success=is_success)
+                return render_template('login.html', msg={'class':'text-danger bg-warning','content':"Username or password incorrect"})
 
 
 @app.route('/signup', methods=['GET', 'POST'])
 def signup():
+    if 'user' in session:
+        return redirect(url_for('dashboard'))
     if request.method == 'GET':
         return render_template('signup.html')
     elif request.method == 'POST':
@@ -105,6 +109,7 @@ def donateblood():
 
 @app.route('/bloodavailability', methods=['GET', 'POST'])
 def bloodavailability():
+    # public view, do not restrict it with session
     if request.method == 'GET':
         user = User.getAlluser()
         return render_template('bloodavailability.html', user=user)
@@ -222,26 +227,29 @@ def emergency_directory():
                 econtact.updateContact(name, designation, contact, location)
                 return redirect(url_for('emergency_directory'))
             directory = EmergencyDirectory.query.all()
-            return render_template('emergency_directory_voln.html', directory=directory)
+            return render_template('emergency_directory_voln.htm', directory=directory)
     directory = EmergencyDirectory.query.all()
     return render_template('emergency_directory.html', directory=directory)
 
 
 @app.route('/add_emergency_directory', methods=['POST'])
 def add_emergency_directory():
-    if request.method == 'POST':
-        name = request.form['name']
-        designation = request.form['designation']
-        contact = request.form['contact']
-        location = request.form['location']
-        EmergencyDirectory.addEmergencyDirectory(name, designation, contact, location)
-        return redirect(url_for('emergency_directory'))
+    if 'role' in session:
+        if session['role'] == 'volunteer':
+            if request.method == 'POST':
+                name = request.form['name']
+                designation = request.form['designation']
+                contact = request.form['contact']
+                location = request.form['location']
+                EmergencyDirectory.addEmergencyDirectory(name, designation, contact, location)
+                return redirect(url_for('emergency_directory'))
+    return redirect(url_for('login'))
 
 
 @app.route('/logout' , methods=['GET', 'POST'])
 def logout():
     session.pop('user', None)
-    return redirect(url_for('index'))
+    return redirect(url_for('login'))
     
 @app.route('/resources')
 def resources_dashboard():
