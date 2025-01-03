@@ -1,7 +1,8 @@
-from database import *
+from database import db
 
 class Resource(db.Model):
     __tablename__ = 'resources'
+    
     resID = db.Column(db.Integer, primary_key=True, autoincrement=True)
     campID = db.Column(db.Integer, db.ForeignKey('Reliefcamp.id'), nullable=False)
     type = db.Column(db.String(50), nullable=False)
@@ -48,4 +49,9 @@ class Resource(db.Model):
     @staticmethod
     def trackResource(campID):
         return Resource.query.filter_by(campID=campID).all()
+
+    @staticmethod
+    def requestResource(type, location):
+        return Resource.query.filter_by(type=type, location=location).first()
+
 
