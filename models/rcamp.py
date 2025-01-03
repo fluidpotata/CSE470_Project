@@ -40,3 +40,9 @@ class Rcamp(db.Model):
         self.v_capacity = v_cap
         self.v_occupied = v_occ
         db.session.commit()
+
+
+    @staticmethod
+    def get_all_camps():
+        camps = Rcamp.query.all()
+        return camps

@@ -40,4 +40,8 @@ class Volunteer(db.Model):
     
     def getInfo(self):
         return self
+    
+    @staticmethod
+    def getAllVolunteers():
+        return Volunteer.query.all()
 

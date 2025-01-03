@@ -305,7 +305,22 @@ def apply_volunteer():
         flash("Application submitted successfully!", "success")
         return redirect(url_for('dashboard'))
 
+
+@app.route('/updatevolunteer', methods=['GET', 'POST'])
+def updatevolunteer():
+    if 'role' in session:
+        if session['role'] == 'volunteer':
+            voln = Volunteer.getVolunteer(session['user'])
+            if voln.role != 'coordinator':
+                return "You do not have access to it!"
+            if request.method == 'POST': 
+                v_id = request.form['volunteer_id']
+                r_id = request.form['camp_id']
+                assigned = WorkAssigned.query.filter_by(volunteer_id = v_id).first()
+                return redirect(url_for('updatevolunteer'))
+            return render_template('volnlist.html', user = User, volunteers= Volunteer.getAllVolunteers(), camps = Rcamp.get_all_camps())
         
+    return redirect(url_for('dashboard'))           
 
 @app.route('/logout' , methods=['GET', 'POST'])
 def logout():
